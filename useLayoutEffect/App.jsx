@@ -11,7 +11,7 @@ import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 // `false` aithe, `useLayoutEffect` vaduthundi (flicker undadu).
 function Tooltip({ children, targetRect, useFlicker }) {
   const tooltipRef = useRef(null);
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const [tooltipPosition, setTooltipPosition] = useState({ top: -1000, left: 0 });
 
   // Choose which effect to use based on the prop
   const useCorrectEffect = useFlicker ? useEffect : useLayoutEffect;
@@ -19,11 +19,16 @@ function Tooltip({ children, targetRect, useFlicker }) {
   useCorrectEffect(() => {
     if (targetRect && tooltipRef.current) {
       const { height: tooltipHeight } = tooltipRef.current.getBoundingClientRect();
-      const { left, bottom } = targetRect;
+      const { left, bottom, top } = targetRect;
 
-      // Calculate position
+      let newTop = bottom + 5; // Position below by default
+      // Check if it fits below the button, if not, place it above
+      if (newTop + tooltipHeight > window.innerHeight) {
+        newTop = top - tooltipHeight - 5;
+      }
+
       const newPosition = {
-        top: bottom + 5, // 5px below the button
+        top: newTop,
         left: left,
       };
 
@@ -60,24 +65,18 @@ function Tooltip({ children, targetRect, useFlicker }) {
 
 // --- Main App Component ---
 export default function App() {
-  const [show, setShow] = useState(false);
-  const [targetRect, setTargetRect] = useState(null);
-  const buttonRef = useRef(null);
+  const [showFlicker, setShowFlicker] = useState(false);
+  const [targetRectFlicker, setTargetRectFlicker] = useState(null);
+  const flickerButtonRef = useRef(null);
 
-  function handlePointerEnter() {
-    const rect = buttonRef.current.getBoundingClientRect();
-    setShow(true);
-    setTargetRect(rect);
-  }
-
-  function handlePointerLeave() {
-    setShow(false);
-    setTargetRect(null);
-  }
+  const [showSmooth, setShowSmooth] = useState(false);
+  const [targetRectSmooth, setTargetRectSmooth] = useState(null);
+  const smoothButtonRef = useRef(null);
 
   const appStyle = {
     fontFamily: 'sans-serif',
     padding: '20px',
+    textAlign: 'center'
   };
 
   return (
@@ -92,22 +91,43 @@ export default function App() {
       <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '50px' }}>
 
         {/* The "Wrong" Way - with useEffect */}
-        <button ref={buttonRef} onPointerEnter={handlePointerEnter} onPointerLeave={handlePointerLeave}>
+        <button
+          ref={flickerButtonRef}
+          onPointerEnter={() => {
+            const rect = flickerButtonRef.current.getBoundingClientRect();
+            setShowFlicker(true);
+            setTargetRectFlicker(rect);
+          }}
+          onPointerLeave={() => {
+            setShowFlicker(false);
+            setTargetRectFlicker(null);
+          }}
+        >
           Hover me (Flickers with useEffect)
         </button>
-        {show && (
-          <Tooltip targetRect={targetRect} useFlicker={true}>
+        {showFlicker && (
+          <Tooltip targetRect={targetRectFlicker} useFlicker={true}>
             This flickers!
           </Tooltip>
         )}
 
         {/* The "Right" Way - with useLayoutEffect */}
-        {/* Note: This is a simplified example. In a real app, you'd manage multiple refs. */}
-        <button onPointerEnter={handlePointerEnter} onPointerLeave={handlePointerLeave}>
+        <button
+          ref={smoothButtonRef}
+          onPointerEnter={() => {
+            const rect = smoothButtonRef.current.getBoundingClientRect();
+            setShowSmooth(true);
+            setTargetRectSmooth(rect);
+          }}
+          onPointerLeave={() => {
+            setShowSmooth(false);
+            setTargetRectSmooth(null);
+          }}
+        >
           Hover me (Smooth with useLayoutEffect)
         </button>
-        {show && (
-          <Tooltip targetRect={targetRect} useFlicker={false}>
+        {showSmooth && (
+          <Tooltip targetRect={targetRectSmooth} useFlicker={false}>
             This is smooth!
           </Tooltip>
         )}
