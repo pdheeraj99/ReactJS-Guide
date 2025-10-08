@@ -1,0 +1,32 @@
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #282c34;
+  color: #f0f0f0;
+  font-family: sans-serif;
+  text-align: center;
+  border: 1px dashed #61dafb;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #444c56; /* Dark grey */
+  border-top: 5px solid #61dafb; /* React Blue */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+  margin-bottom: 10px;
+}
