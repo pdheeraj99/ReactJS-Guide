@@ -1,0 +1,73 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  background-color: #f8f9fa;
+  color: #333;
+  padding: 20px;
+}
+
+h1, h3 {
+  color: #d9534f; /* A reddish color for Activity */
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #dee2e6;
+  margin: 20px 0;
+}
+
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  color: #6c757d;
+  transition: color 0.2s;
+}
+
+.tabs button.active {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+.tabs button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #d9534f;
+}
+
+.tabs button:hover {
+  color: #d9534f;
+}
+
+main {
+  margin-top: 20px;
+}
+
+.tab-content {
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  background-color: #fdfdfe;
+}
