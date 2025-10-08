@@ -1,0 +1,103 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  background-color: #282c34;
+  color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  text-align: center;
+}
+
+.app-container {
+  background-color: #20232a;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 500px;
+}
+
+h1 {
+  color: #61dafb;
+}
+
+.nav-controls {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-controls button {
+  background-color: #61dafb;
+  color: #20232a;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.nav-controls button:hover {
+  transform: scale(1.05);
+}
+
+.page-container {
+  position: relative; /* Needed for the absolute positioning of transition elements */
+  height: 150px;
+  background-color: #282c34;
+  border-radius: 8px;
+  display: grid; /* Use grid to easily center the content */
+  place-items: center;
+  overflow: hidden; /* Hide the sliding elements */
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* --- The Animation Magic --- */
+
+/* 1. Define the keyframes for our slide animations */
+@keyframes slide-from-right {
+  from { transform: translateX(100%); }
+}
+@keyframes slide-to-left {
+  to { transform: translateX(-100%); }
+}
+@keyframes slide-from-left {
+  from { transform: translateX(-100%); }
+}
+@keyframes slide-to-right {
+  to { transform: translateX(100%); }
+}
+
+/* 2. Apply animations based on the classes from the <ViewTransition> component */
+
+/* --- FORWARD NAVIGATION --- */
+/* Old page (sliding out) when tagged 'forward' */
+::view-transition-old(slide-to-left) {
+  animation: 300ms ease-in both slide-to-left;
+}
+/* New page (sliding in) when tagged 'forward' */
+::view-transition-new(slide-from-right) {
+  animation: 300ms ease-out both slide-from-right;
+}
+
+/* --- BACK NAVIGATION --- */
+/* Old page (sliding out) when tagged 'back' */
+::view-transition-old(slide-to-right) {
+  animation: 300ms ease-in both slide-to-right;
+}
+/* New page (sliding in) when tagged 'back' */
+::view-transition-new(slide-from-left) {
+  animation: 300ms ease-out both slide-from-left;
+}
