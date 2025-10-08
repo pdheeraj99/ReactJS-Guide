@@ -65,22 +65,4 @@ describe('Counter Component', () => {
     expect(document.title).toBe('Count is 1');
   });
 
-  // --- Example of a FAILING test without act (for demonstration) ---
-  /*
-  test('This test would be flaky without act', () => {
-    render(<Counter />);
-    const button = screen.getByText('Increment');
-    const label = screen.getByText(/Count:/);
-
-    // Act
-    // Manam fireEvent ni call chestam, kani daani update complete ayye
-    // varaku wait cheyyam.
-    fireEvent.click(button);
-
-    // Assert
-    // Ee line ventane run avvadam valla, DOM inka update avvakapovachu.
-    // Console lo "not wrapped in act(...)" warning vasthundi and test fail avvochu.
-    expect(label).toHaveTextContent('Count: 1'); // 🚨 This might fail!
-  });
-  */
 });

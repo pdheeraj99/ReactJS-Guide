@@ -29,12 +29,9 @@ export default function UserProfile({ userId }) {
         {/*
           In a real Server Component environment, you can await async components.
           Since we can't run that here, we are showing the conceptual structure.
-          The @ts-ignore is to suppress IDE errors in a non-RSC environment.
         */}
-        {/* @ts-ignore */}
         <UserAvatar userId={userId} />
         <hr />
-        {/* @ts-ignore */}
         <UserBio userId={userId} />
       </Suspense>
     </div>
