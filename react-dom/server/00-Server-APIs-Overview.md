@@ -21,9 +21,19 @@ React manaki server rendering kosam konni different tools isthundi. Ekkada edi v
     *   **Use Case:** When you want to generate **completely static, non-interactive HTML**. For example, creating HTML email templates or exporting content to a PDF. The output of this function **cannot be hydrated**.
 
 3.  **`renderToPipeableStream`** (for Node.js):
-    *   **What it does:** Renders your component, but instead of waiting for everything, it gives you a **stream**.
+    *   **What it does:** Renders your component to a **Node.js Stream**.
     *   **Behavior:** It's **asynchronous and streaming**. Idi mundu page "shell" (the basic layout) ni pampisthundi. Tarvata, data load ayye కొద్దీ, HTML chunks ni pampisthune untundi. Idi `<Suspense>` tho perfect ga integrate avuthundi.
-    *   **Use Case:** This is the **modern, recommended** approach for SSR in Node.js environments. It provides the best user experience.
+    *   **Use Case:** This is the **modern, recommended** approach for SSR in **Node.js** environments.
+
+4.  **`renderToReadableStream`** (for Web Streams):
+    *   **What it does:** Renders your component to a **Web Stream**.
+    *   **Behavior:** Functionally similar to `renderToPipeableStream` but for modern edge runtimes like Deno, Cloudflare Workers, etc.
+    *   **Use Case:** This is the **modern, recommended** approach for SSR in **non-Node.js** environments.
+
+5.  **`resume` & `resumeToPipeableStream`** (Advanced):
+    *   **What it does:** These are highly advanced APIs used to "resume" a render that was started somewhere else (e.g., during a build step with `prerender`).
+    *   **Behavior:** They take a "postponed" state and continue rendering from where the previous render left off.
+    *   **Use Case:** Advanced, distributed server architectures and static site generation (SSG) with dynamic parts.
 
 ### Quick Summary Table
 
@@ -32,5 +42,7 @@ React manaki server rendering kosam konni different tools isthundi. Ekkada edi v
 | `renderToString` | String | ✅ Yes | ❌ No | Simple SSR, legacy apps |
 | `renderToStaticMarkup`| String | ❌ **No** | ❌ No | Static content (emails, PDFs) |
 | `renderToPipeableStream`| Stream | ✅ Yes | ✅ Yes | **Modern SSR in Node.js** |
+| `renderToReadableStream`| Stream | ✅ Yes | ✅ Yes | **Modern SSR in Web Stream envs** |
+| `resume...` | Stream | ✅ Yes | ✅ Yes | Advanced: Resuming a prerender |
 
-Ee overview tho, ippudu manam prathi function ni detail ga, conceptual server examples tho chuddam. Let's start with the classic, `renderToString`! ➡️🚀
+Ee overview tho, ippudu manam prathi function ni detail ga, conceptual server examples tho chuddam! Let's start with the classic, `renderToString`! ➡️🚀
