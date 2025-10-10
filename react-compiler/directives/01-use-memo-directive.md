@@ -1,39 +1,42 @@
-# `"use memo"`: "Compiler, Please Optimize This!" ✅
+# `"use memo"`: "Compiler, Start Your Magic!" ✅
 
-Hey mawa! Manam compiler configuration lo `compilationMode: 'annotation'` gurinchi matladukunnam. Ee mode lo, compiler by default a a component ni optimize cheyyadu. Manam దానికి cheppali, "Hey, ee specific component ni nuvvu optimize cheyyi" ani.
+Hey mawa! Manam mundu chapter lo React Compiler mana simple code ni theeskuni, daaniki automatic ga caching add chesi, ela "After" code laaga marusthundo chusam.
 
-Ee "opt-in" instruction eh **`"use memo"`** directive.
+Mari, ee magic ni ela start cheyyali? Aa "on" switch eh **`"use memo"`** directive.
 
-### How to Use It?
+### What does `"use memo"` do?
 
-`"use memo"` anedi oka simple string. Daanini manam component or hook function lopaala, at the very top, pedatham.
+Simple ga cheppalante:
+> **`"use memo"` is the explicit instruction you give to the React Compiler to take a specific component or hook and apply its automatic memoization (caching).**
+
+Idi compiler ki oka green signal laantidi. Ee directive chudagane, compiler aa function ni theeskuni, daani loni variables and functions ni analyze chesi, `cache(...)` logic ni add cheyyadam start chesthundi.
+
+### Why do we need an "on" switch?
+
+Ee switch main ga **incremental adoption** kosam use avuthundi.
+
+Imagine, mee project lo compiler ni kotthaga set chestunnaru. `compilationMode` ni `'annotation'` ga set chesi, meeru ee process ni full control lo theeskovacchu.
+1.  **Start Safe:** Meeru mundu, chala simple ga, stable ga unna components ki matrame `"use memo"` add chestaru.
+2.  **Verify:** Aa components correct ga pani chestunnayo ledo test chestaru.
+3.  **Expand:** Confidence vachaka, inkonni complex components ki `"use memo"` add chesi, compiler యొక్క scope ni slow ga expand chestaru.
 
 ```jsx
-function MyComponent({ data }) {
-  // Tell the compiler to optimize this component
+// In babel.config.js, you have set: { compilationMode: 'annotation' }
+
+// ✅ This component WILL BE COMPILED because of the directive.
+function SafeToOptimizeComponent() {
   "use memo";
+  // ...
+  return <div>...</div>;
+}
 
-  // ... rest of your component code ...
-  const processedData = process(data);
-
-  return <div>{processedData}</div>;
+// ❌ This component WILL BE SKIPPED because it has no directive.
+function LegacyComponent() {
+  // ...
+  return <div>...</div>;
 }
 ```
 
-**The Rule:** Ee string literal anedi function body lo first statement ga undali.
+Ee approach valla, meeru compiler ni oka pedda project lo chala safe ga, risk lekunda introduce cheyyochu.
 
-### Why is this useful?
-
-Ee directive pedda, existing codebases lo React Compiler ni **incrementally adopt** cheyadaniki chala useful.
-
-Imagine, mee app lo 1000 components unnayi. Meeru compiler ni anni components meeda oke sari enable cheste, emaina theda vasthe, ekkada problem vachindo kanukkodam chala kashtam.
-
-Instead, meeru `compilationMode: 'annotation'` set chesi:
-1.  Munduga, chala stable and well-tested components ki matrame `"use memo"` add chestaru.
-2.  Thorough ga test chesi, antha correct ga pani chesthundo ledo chustaru.
-3.  Confidence vachaka, inkonni components ki add chestaru.
-4.  Ila slow ga, step-by-step, mee entire codebase ni compiler ki adapt chestaru.
-
-`"use memo"` anedi manaki compiler meeda fine-grained control isthundi.
-
-Ippudu, deeniki opposite ayna `"use no memo"` gurinchi chuddam. Adi enduku avasaramo, next chapter lo teluskundam! ➡️🚫
+Ippudu, deeniki opposite ayna `"use no memo"` gurinchi chuddam. Adi ee magic ni "off" cheyyadaniki use avuthundi. ➡️🚫
